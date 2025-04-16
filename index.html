@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>VR Lapangan Bulutangkis</title>
+    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/aframe-extras@6.1.1/dist/aframe-extras.min.js"></script>
+    <style>
+      body {
+        margin: 0;
+        overflow: hidden;
+      }
+
+      #audioBtn {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        padding: 10px 20px;
+        background: #28a745;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        cursor: pointer;
+        z-index: 999;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Tombol Play Audio -->
+    <button id="audioBtn">Play Audio</button>
+
+    <!-- A-Frame Scene -->
+    <a-scene background="color: #ECECEC">
+      <!-- Pencahayaan -->
+      <a-entity light="type: ambient; color: #ffffff; intensity: 0.6"></a-entity>
+      <a-entity
+        light="type: directional; color: #ffffff; intensity: 1"
+        position="1 3 2"
+      ></a-entity>
+
+      <!-- Kamera -->
+      <a-entity position="0 1.6 5">
+        <a-camera wasd-controls look-controls="pointerLockEnabled: true"></a-camera>
+      </a-entity>
+
+      <!-- Model -->
+      <a-entity
+        gltf-model="#lapanganModel"
+        position="-1.638 0.607 -1.04832"
+        scale="1 0.5 1"
+      ></a-entity>
+      <a-entity
+        gltf-model="#kursiModel"
+        position="10.57392 0.83735 -4.03531"
+        scale="0.8 0.7 0.9"
+      ></a-entity>
+      <a-entity
+        gltf-model="#skorModel"
+        position="-1.634 0.35517 6.35326"
+        scale="0.2 0.2 0.2"
+        rotation="0 180 0"
+      ></a-entity>
+      <a-entity
+        gltf-model="#orangModel"
+        animation-mixer
+        position="-4.26532 0.21359 -1.20655"
+        scale="0.5 0.8 0.8"
+      ></a-entity>
+      <a-entity
+        gltf-model="#orangAnimasiModel"
+        animation-mixer="clip: *; loop: repeat"
+        position="-1.591 0.756 4.512"
+        scale="0.66 0.72 1.03"
+        rotation="0 -90 0"
+      ></a-entity>
+      <a-entity
+       gltf-model="#benderaModel"
+       animation-mixer="clip: *; loop: repeat"
+       position="-0.92749 0.59449 -7.246"
+      scale="0.58 1.57 0.2"
+      ></a-entity>
+
+      <!-- Audio Ambience -->
+      <a-sound
+        id="suaraLapangan"
+        src="#audioLapangan"
+        loop="true"
+        volume="2"
+        position="0 2 0"
+      ></a-sound>
+
+      <!-- Asset -->
+      <a-assets>
+        <a-asset-item id="lapanganModel" src="model/lapangan.glb"></a-asset-item>
+        <a-asset-item id="kursiModel" src="model/kursi.glb"></a-asset-item>
+        <a-asset-item id="skorModel" src="model/skor.glb"></a-asset-item>
+        <a-asset-item id="orangModel" src="model/orang.glb"></a-asset-item>
+        <a-asset-item id="orangAnimasiModel" src="model/orang_animasi.glb"></a-asset-item>
+        <a-asset-item id="benderaModel" src="model/bendera.glb"></a-asset-item>
+
+        <!-- AUDIO - pastikan nama file ini sesuai! -->
+        <audio id="audioLapangan" src="audio/audio_lapangan.ogg" crossorigin="anonymous"></audio>
+      </a-assets>
+    </a-scene>
+
+    <!-- Script Audio -->
+    <script>
+      const btn = document.getElementById("audioBtn");
+      const soundEntity = document.querySelector("#suaraLapangan");
+
+      btn.addEventListener("click", () => {
+        if (!soundEntity.components.sound) {
+          soundEntity.addEventListener("sound-loaded", () => {
+            soundEntity.components.sound.playSound();
+          });
+        } else {
+          soundEntity.components.sound.playSound();
+        }
+      });
+    </script>
+  </body>
+</html>
