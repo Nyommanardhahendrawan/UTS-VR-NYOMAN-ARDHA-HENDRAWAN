@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dapur Virtual Kadek</title>
+  <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@6.1.1/dist/aframe-extras.min.js"></script>
+  <style>
+    #play-audio {
+      position: absolute;
+      z-index: 999;
+      top: 20px;
+      left: 20px;
+      padding: 10px 15px;
+      background: #f44336;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <!-- Tombol untuk memulai audio -->
+  <button id="play-audio" onclick="putarSuara()">Mainkan Suara</button>
+
+  <a-scene renderer="antialias: false">
+    <!-- Cahaya -->
+    <a-light type="ambient" color="#CCCCCC"></a-light>
+    <a-light type="directional" position="2 4 3" intensity="0.6"></a-light>
+
+    <!-- Lantai -->
+    <a-plane position="0 0 0" rotation="-90 0 0" width="20" height="20" color="#c2b280"></a-plane>
+
+    <!-- Dinding -->
+    <a-box position="0 3 -10" width="20" height="6" depth="0.1" color="#eeeeee"></a-box>
+    <a-box position="-10 3 0" width="0.1" height="6" depth="20" color="#dddddd"></a-box>
+    <a-box position="10 3 0" width="0.1" height="6" depth="20" color="#dddddd"></a-box>
+
+    <!-- Aset -->
+    <a-assets>
+      <a-asset-item id="kulkas" src="models/kulkas.glb"></a-asset-item>
+      <a-asset-item id="meja" src="models/meja.glb"></a-asset-item>
+      <a-asset-item id="kompor" src="models/kompor.glb"></a-asset-item>
+      <a-asset-item id="wastafel" src="models/wastafel.glb"></a-asset-item>
+      <a-asset-item id="lemari" src="models/lemari.glb"></a-asset-item>
+      <a-asset-item id="orang" src="models/orang.glb"></a-asset-item>
+      <a-asset-item id="kucing" src="models/kucing.glb"></a-asset-item>
+      <audio id="audio-dapur" src="audio/dapur.mp3"></audio>
+    </a-assets>
+
+    <!-- Peralatan Dapur -->
+    <a-entity gltf-model="#kulkas" position="-8.15 -0.27 -9.35" scale="0.867 0.621 0.991"></a-entity>
+    <a-entity gltf-model="#meja" position="1.29 -0.257 -0.781" scale="0.003 0.003 0.003"></a-entity>
+    <a-entity gltf-model="#kompor" position="10.51 2.87 1.93" scale="1.689 1.858 3.545" rotation="0.25 -2.25 94.11"></a-entity>
+    <a-entity gltf-model="#wastafel" position="-12 0.12 -6.74"></a-entity>
+    <a-entity gltf-model="#lemari" position="5.23 0.52 -10.02" scale="1.069 0.75 1.464" rotation="0 0.09 0"></a-entity>
+
+    <!-- Animasi Orang -->
+    <a-entity id="orang-berjalan" 
+              gltf-model="#orang" 
+              position="-3.68 0 -5.64" 
+              animation="property: position; to: 5 0 -8; dir: alternate; dur: 8000; loop: true; easing: linear"
+              animation-mixer="clip: *">
+    </a-entity>
+
+    <!-- Animasi Kucing -->
+    <a-entity id="kucing-berjalan" 
+              gltf-model="#kucing" 
+              position="0.08 0 4.49" 
+              scale="0.025 0.025 0.025" 
+              animation="property: position; to: 3 0 -3; dir: alternate; dur: 10000; loop: true; easing: linear"
+              animation-mixer="clip: *">
+    </a-entity>
+
+    <!-- Suara (tidak autoplay, hanya dipicu tombol) -->
+    <a-entity id="suara-dapur" sound="src: #audio-dapur; loop: true; positional: false; volume: 0.8"></a-entity>
+
+    <!-- Kamera dan Cursor -->
+    <a-entity position="0 1.6 6">
+      <a-camera>
+        <a-cursor color="red"></a-cursor>
+      </a-camera>
+    </a-entity>
+  </a-scene>
+
+  <script>
+    function putarSuara() {
+      const suara = document.querySelector('#suara-dapur');
+      if (suara.components.sound) {
+        suara.components.sound.playSound();
+      }
+    }
+  </script>
+</body>
+</html>
